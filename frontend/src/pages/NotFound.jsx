@@ -12,7 +12,7 @@ import {
     ButtonContainer,
     StyledButton,
     DecorativeElement,
-} from './Styles/NotFound/NotFoundStyles';
+} from '../components/Styles/NotFound/NotFoundStyles';
 
 const NotFoundPage = () => {
     const navigate = useNavigate();
