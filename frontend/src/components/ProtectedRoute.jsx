@@ -4,7 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 import api from '../api';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constants';
 
-function ProtectedRoute({ children }) {
+const ProtectedRoute = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
