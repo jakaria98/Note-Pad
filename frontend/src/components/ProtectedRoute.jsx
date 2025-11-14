@@ -92,6 +92,6 @@ const ProtectedRoute = ({ children }) => {
 
     // Render protected content
     return children ? children : <Outlet />;
-}
+};
 
 export default ProtectedRoute;
