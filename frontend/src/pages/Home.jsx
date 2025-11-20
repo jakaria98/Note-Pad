@@ -107,7 +107,7 @@ const Home = () => {
             ) : (
                 <Grid container spacing={3}>
                     {notes.map((note) => (
-                        <Grid item xs={12} sm={6} md={4} key={note.id}>
+                        <Grid size={{ xs: 12, sm: 6, md: 4 }} key={note.id}>
                             <NoteCard
                                 note={note}
                                 onView={() => handleViewNote(note)}
