@@ -15,7 +15,7 @@ import {
     SubmitButton,
     ErrorAlert,
     ToggleFormControlLabel,
-} from './Styles/Form/AuthFormStyle.jsx';
+} from './Styles/AuthFormStyle.jsx';
 
 const Form = ({ method = 'login' }) => {
     const navigate = useNavigate();

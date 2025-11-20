@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
-import {
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
-    TextField,
-    Typography,
-    Button,
-    Box,
-    Divider,
-} from '@mui/material';
+import { TextField, Typography } from '@mui/material';
 import { Edit, Delete, Save, Cancel } from '@mui/icons-material';
-import { useModalStyles } from '../Styles/Notes/useModalStyles';
+
+// Import styled components
+import {
+    StyledDialog,
+    StyledDialogTitle,
+    StyledDialogContent,
+    StyledDialogActions,
+    StyledTextField,
+    StyledTextArea,
+    DialogButton,
+    TitleContainer,
+    StyledDivider,
+    DateText,
+} from '../Styles/ModalStyles';
 
 const ViewNoteModal = ({ open, onClose, note, onUpdate, onDelete }) => {
-    const styles = useModalStyles();
     const [isEditing, setIsEditing] = useState(false);
     const [editTitle, setEditTitle] = useState('');
     const [editContent, setEditContent] = useState('');
@@ -51,28 +53,27 @@ const ViewNoteModal = ({ open, onClose, note, onUpdate, onDelete }) => {
     if (!note) return null;
 
     return (
-        <Dialog open={open} onClose={handleClose} sx={styles.dialog}>
-            <DialogTitle>
-                <Box sx={styles.dialogTitle}>
+        <StyledDialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+            <StyledDialogTitle>
+                <TitleContainer>
                     {isEditing ? (
-                        <TextField
+                        <StyledTextField
                             value={editTitle}
                             onChange={(e) => setEditTitle(e.target.value)}
                             variant="outlined"
                             fullWidth
-                            sx={styles.textField}
                         />
                     ) : (
                         <Typography variant="h5" component="h2">
                             {note.title}
                         </Typography>
                     )}
-                </Box>
-            </DialogTitle>
+                </TitleContainer>
+            </StyledDialogTitle>
 
-            <DialogContent>
+            <StyledDialogContent>
                 {isEditing ? (
-                    <TextField
+                    <StyledTextArea
                         value={editContent}
                         onChange={(e) => setEditContent(e.target.value)}
                         multiline
@@ -88,18 +89,18 @@ const ViewNoteModal = ({ open, onClose, note, onUpdate, onDelete }) => {
 
                 {note.created_at && (
                     <>
-                        <Divider sx={styles.divider} />
-                        <Typography variant="caption" color="text.secondary">
+                        <StyledDivider />
+                        <DateText variant="caption">
                             Created: {new Date(note.created_at).toLocaleString()}
-                        </Typography>
+                        </DateText>
                     </>
                 )}
-            </DialogContent>
+            </StyledDialogContent>
 
-            <DialogActions sx={styles.dialogActions}>
+            <StyledDialogActions>
                 {isEditing ? (
                     <>
-                        <Button
+                        <DialogButton
                             startIcon={<Cancel />}
                             onClick={() => {
                                 setIsEditing(false);
@@ -109,35 +110,39 @@ const ViewNoteModal = ({ open, onClose, note, onUpdate, onDelete }) => {
                             variant="outlined"
                         >
                             Cancel
-                        </Button>
-                        <Button startIcon={<Save />} onClick={handleUpdate} variant="contained">
+                        </DialogButton>
+                        <DialogButton
+                            startIcon={<Save />}
+                            onClick={handleUpdate}
+                            variant="contained"
+                        >
                             Save Changes
-                        </Button>
+                        </DialogButton>
                     </>
                 ) : (
                     <>
-                        <Button
+                        <DialogButton
                             startIcon={<Edit />}
                             onClick={() => setIsEditing(true)}
                             variant="outlined"
                         >
                             Edit
-                        </Button>
-                        <Button
+                        </DialogButton>
+                        <DialogButton
                             startIcon={<Delete />}
                             onClick={handleDelete}
                             variant="outlined"
                             color="error"
                         >
                             Delete
-                        </Button>
-                        <Button onClick={handleClose} variant="contained">
+                        </DialogButton>
+                        <DialogButton onClick={handleClose} variant="contained">
                             Close
-                        </Button>
+                        </DialogButton>
                     </>
                 )}
-            </DialogActions>
-        </Dialog>
+            </StyledDialogActions>
+        </StyledDialog>
     );
 };
 

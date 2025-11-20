@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
-import {
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
-    TextField,
-    Button,
-    Box,
-} from '@mui/material';
 import { Add } from '@mui/icons-material';
-import { useModalStyles } from '../Styles/Notes/useModalStyles';
+
+// Import styled components
+import {
+    StyledDialog,
+    StyledDialogTitle,
+    StyledDialogContent,
+    StyledDialogActions,
+    StyledTextField,
+    StyledTextArea,
+    DialogButton,
+    TitleContainer,
+} from '../Styles/ModalStyles';
 
 const CreateNoteModal = ({ open, onClose, onSubmit }) => {
-    const styles = useModalStyles();
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
 
@@ -32,16 +33,16 @@ const CreateNoteModal = ({ open, onClose, onSubmit }) => {
     };
 
     return (
-        <Dialog open={open} onClose={handleClose} sx={styles.dialog}>
+        <StyledDialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
             <form onSubmit={handleSubmit}>
-                <DialogTitle>
-                    <Box sx={styles.dialogTitle}>
+                <StyledDialogTitle>
+                    <TitleContainer>
                         <Add />
                         Create New Note
-                    </Box>
-                </DialogTitle>
-                <DialogContent>
-                    <TextField
+                    </TitleContainer>
+                </StyledDialogTitle>
+                <StyledDialogContent>
+                    <StyledTextField
                         autoFocus
                         margin="dense"
                         label="Title"
@@ -51,9 +52,8 @@ const CreateNoteModal = ({ open, onClose, onSubmit }) => {
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         required
-                        sx={styles.textField}
                     />
-                    <TextField
+                    <StyledTextArea
                         margin="dense"
                         label="Content"
                         multiline
@@ -64,18 +64,19 @@ const CreateNoteModal = ({ open, onClose, onSubmit }) => {
                         onChange={(e) => setContent(e.target.value)}
                         required
                     />
-                </DialogContent>
-                <DialogActions sx={styles.dialogActions}>
-                    <Button onClick={handleClose} variant="outlined">
+                </StyledDialogContent>
+                <StyledDialogActions>
+                    <DialogButton onClick={handleClose} variant="outlined">
                         Cancel
-                    </Button>
-                    <Button type="submit" variant="contained">
+                    </DialogButton>
+                    <DialogButton type="submit" variant="contained">
                         Create Note
-                    </Button>
-                </DialogActions>
+                    </DialogButton>
+                </StyledDialogActions>
             </form>
-        </Dialog>
+        </StyledDialog>
     );
 };
 
 export default CreateNoteModal;
+ 

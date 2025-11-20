@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Grid } from '@mui/material';
-import { Add } from '@mui/icons-material';
+import { Add, Logout } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 import api from '../api';
 
 // Import styled components
@@ -11,7 +12,8 @@ import {
     CreateButton,
     EmptyStateBox,
     EmptyStateText,
-} from '../components/Styles/Home/HomeStyle';
+    LogoutButton,
+} from '../components/Styles/HomeStyle';
 
 // Import components
 import NoteCard from '../components/Notes/NoteCard';
@@ -19,6 +21,7 @@ import CreateNoteModal from '../components/Notes/CreateModal';
 import ViewNoteModal from '../components/Notes/ViewModal';
 
 const Home = () => {
+    const navigate = useNavigate();
     const [notes, setNotes] = useState([]);
     const [selectedNote, setSelectedNote] = useState(null);
     const [createModalOpen, setCreateModalOpen] = useState(false);
@@ -30,43 +33,58 @@ const Home = () => {
 
     const getNotes = async () => {
         try {
+            console.log('🔄 Fetching notes...');
             const response = await api.get('/api/notes/');
+            console.log('✅ Notes fetched successfully:', response.data);
             setNotes(response.data);
         } catch (error) {
-            console.error('Error fetching notes:', error);
+            console.error('❌ Error fetching notes:', error);
+            console.error('❌ Error response:', error.response);
         }
+    };
+
+    const handleLogout = () => {
+        console.log('🚪 Logging out...');
+        localStorage.clear();
+        navigate('/login');
     };
 
     const deleteNote = async (id) => {
         try {
+            console.log('🗑️ Deleting note ID:', id);
             await api.delete(`/api/notes/${id}/`);
-            console.log('Note deleted successfully');
+            console.log('✅ Note deleted successfully');
             getNotes();
         } catch (error) {
-            console.error('Error deleting note:', error);
+            console.error('❌ Error deleting note:', error);
+            console.error('❌ Error response:', error.response);
         }
     };
 
     const createNote = async (noteData) => {
         try {
+            console.log('📝 Creating note:', noteData);
             await api.post('/api/notes/', noteData);
-            console.log('Note created successfully');
+            console.log('✅ Note created successfully');
             setCreateModalOpen(false);
             getNotes();
         } catch (error) {
-            console.error('Error creating note:', error);
+            console.error('❌ Error creating note:', error);
+            console.error('❌ Error response:', error.response);
         }
     };
 
     const updateNote = async (id, noteData) => {
         try {
+            console.log('✏️ Updating note ID:', id, 'with data:', noteData);
             await api.put(`/api/notes/${id}/`, noteData);
-            console.log('Note updated successfully');
+            console.log('✅ Note updated successfully');
             setViewModalOpen(false);
             setSelectedNote(null);
             getNotes();
         } catch (error) {
-            console.error('Error updating note:', error);
+            console.error('❌ Error updating note:', error);
+            console.error('❌ Error response:', error.response);
         }
     };
 
@@ -88,13 +106,23 @@ const Home = () => {
                 <TitleText variant="h3" component="h1">
                     My Notes
                 </TitleText>
-                <CreateButton
-                    variant="contained"
-                    startIcon={<Add />}
-                    onClick={() => setCreateModalOpen(true)}
-                >
-                    Create Note
-                </CreateButton>
+                <div style={{ display: 'flex', gap: '16px' }}>
+                    <CreateButton
+                        variant="contained"
+                        startIcon={<Add />}
+                        onClick={() => setCreateModalOpen(true)}
+                    >
+                        Create Note
+                    </CreateButton>
+                    <LogoutButton
+                        variant="outlined"
+                        startIcon={<Logout />}
+                        onClick={handleLogout}
+                        color="error"
+                    >
+                        Logout
+                    </LogoutButton>
+                </div>
             </HeaderBox>
 
             {/* Notes Grid */}
